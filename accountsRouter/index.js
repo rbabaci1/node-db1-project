@@ -1,12 +1,12 @@
 const express = require("express");
 
-const db = require("../data/dbConfig");
+const { get } = require("../data/helpers");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const accounts = await db("accounts");
+    const accounts = await get("accounts");
 
     res.status(200).json(accounts);
   } catch (err) {
