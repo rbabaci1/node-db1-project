@@ -25,7 +25,7 @@ router.get("/:id", validateId, async ({ account }, res) => {
 async function validateId(req, res, next) {
   try {
     const { id } = req.params;
-    const account = await getById(id);
+    const [account] = await getById(id);
 
     if (account) {
       req.account = account;
