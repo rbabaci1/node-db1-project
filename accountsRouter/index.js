@@ -4,13 +4,16 @@ const { get, getById, insert, update, remove } = require("../data/helpers");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   try {
     const accounts = await get();
 
     res.status(200).json(accounts);
   } catch (err) {
-    res.status(500).json({ error: err });
+    next({
+      error: `The accounts could not be retrieved at this moment.`,
+      reason: err.message,
+    });
   }
 });
 
