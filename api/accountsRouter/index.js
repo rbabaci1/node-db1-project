@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { insert, get, getById, update, remove } = require("../data/helpers");
+const { insert, get, getById, update, remove } = require("../../data/helpers");
 
 const router = express.Router();
 
@@ -18,9 +18,9 @@ router.post("/", validateBody, async ({ body }, res, next) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/", async ({ query }, res, next) => {
   try {
-    const accounts = await get();
+    const accounts = await get(query);
 
     res.status(200).json(accounts);
   } catch (err) {
