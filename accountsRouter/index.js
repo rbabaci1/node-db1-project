@@ -17,7 +17,9 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {});
+router.get("/:id", validateId, async ({ account }, res) => {
+  res.status(200).json(account);
+});
 
 ////////////////////////////////////////
 async function validateId(req, res, next) {
@@ -26,6 +28,7 @@ async function validateId(req, res, next) {
     const account = await getById(id);
 
     if (account) {
+      req.account = account;
       next();
     } else {
       next({
