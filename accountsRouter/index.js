@@ -12,7 +12,7 @@ router.post("/", validateBody, async ({ body }, res, next) => {
     res.status(201).json(addedAccount);
   } catch (err) {
     next({
-      error: `The account could not be added at this moment.`,
+      error: "The account could not be added at this moment.",
       reason: err.message,
     });
   }
@@ -25,7 +25,7 @@ router.get("/", async (req, res, next) => {
     res.status(200).json(accounts);
   } catch (err) {
     next({
-      error: `The accounts could not be retrieved at this moment.`,
+      error: "The accounts could not be retrieved at this moment.",
       reason: err.message,
     });
   }
@@ -39,7 +39,6 @@ router.put("/:id", validateId, validateBody, async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const changes = req.body;
-
     const [previousItem] = await getById(id);
 
     await update(id, req.body);
@@ -50,13 +49,29 @@ router.put("/:id", validateId, validateBody, async (req, res, next) => {
     });
   } catch (err) {
     next({
-      error: `The account could not be updated at this moment.`,
+      error: "The account could not be updated at this moment.",
       reason: err.message,
     });
   }
 });
 
-// Validation Middleware
+router.delete("/:id", validateId, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const [accountToRemove] = await getById(id);
+
+    await remove(id);
+
+    res.status(200).json({ removed_account: accountToRemove });
+  } catch (err) {
+    next({
+      error: "The account could not be removed at this moment.",
+      reason: err.message,
+    });
+  }
+});
+
+/*********************     Validation Middleware    ********************/
 async function validateId(req, res, next) {
   try {
     const { id } = req.params;
