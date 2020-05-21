@@ -35,7 +35,28 @@ router.get("/:id", validateId, async ({ account }, res) => {
   res.status(200).json(account);
 });
 
-////////////////////////////////////////
+router.put("/:id", validateId, validateBody, async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const changes = req.body;
+
+    const [previousItem] = await getById(id);
+
+    await update(id, req.body);
+
+    res.status(200).json({
+      previous_account: previousItem,
+      updated_account: { id, ...changes },
+    });
+  } catch (err) {
+    next({
+      error: `The account could not be updated at this moment.`,
+      reason: err.message,
+    });
+  }
+});
+
+// Validation Middleware
 async function validateId(req, res, next) {
   try {
     const { id } = req.params;
