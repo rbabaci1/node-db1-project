@@ -1,8 +1,22 @@
 const express = require("express");
 
-const { get, getById, insert, update, remove } = require("../data/helpers");
+const { insert, get, getById, update, remove } = require("../data/helpers");
 
 const router = express.Router();
+
+router.post("/", validateBody, async ({ body }, res, next) => {
+  try {
+    const [accountId] = await insert(body);
+    const [addedAccount] = await getById(accountId);
+
+    res.status(201).json(addedAccount);
+  } catch (err) {
+    next({
+      error: `The account could not be added at this moment.`,
+      reason: err.message,
+    });
+  }
+});
 
 router.get("/", async (req, res, next) => {
   try {
@@ -49,7 +63,7 @@ function validateBody(req, res, next) {
 
   if (typeof body === undefined) {
     res.status(400).json({ message: `Request body is missing.` });
-  } else if (!body.hasOwnProperty("name") && !body.hasOwnProperty("text")) {
+  } else if (!body.hasOwnProperty("name") || !body.hasOwnProperty("budget")) {
     res.status(400).json({
       message: `Some info in the body is missing or incorrectly defined.`,
     });
