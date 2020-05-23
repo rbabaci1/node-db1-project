@@ -14,14 +14,13 @@ module.exports = {
     },
   },
 
-  // update the following configuration to use PostgreSQL
   production: {
     client: "pg",
     connection: {
       host: "localhost", // if the server is not running on your computer provide the network address
-      database: "./data/northwind.backup", // <-- update
-      user: "rab22", // <-- update
-      password: "212139bob", // <-- update
+      database: "northwind",
+      user: "postgres",
+      password: "212139bob",
     },
     pool: {
       min: 2,
