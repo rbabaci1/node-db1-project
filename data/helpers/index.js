@@ -1,8 +1,7 @@
 const db = require("../dbConfig");
 
 const get = ({ limit = null, sort_by = "id", sort_dir = "asc" }) => {
-  // return db("accounts").limit(limit).orderBy(sort_by, sort_dir);
-  return db("categories").limit(5);
+  return db("accounts").limit(limit).orderBy(sort_by, sort_dir);
 };
 const getById = id => db("accounts").where({ id });
 const insert = account => db("accounts").insert(account);
